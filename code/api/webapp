@@ -1,0 +1,121 @@
+#!flask/bin/python
+from flask import Flask,jsonify,send_from_directory,render_template
+
+def get_outdegree(snapshot):
+	snapshot=snapshot.split(".")
+	outdegree_hash={}
+	with open("../../data/"+"/".join(snapshot)+"/outdegree") as outdegree_file:
+		outdegree_lines=map(str.strip,outdegree_file.readlines())
+		for line in outdegree_lines:
+			line=line.split(" ")
+			outdegree_hash[line[0]]=int(line[1])
+	return outdegree_hash
+
+def get_edgelist(snapshot):
+	snapshot=snapshot.split(".")
+	edgelist_hash={}
+	with open("../../data/"+"/".join(snapshot)+"/edgelist") as edgelist_file:
+		edgelist_lines=map(str.strip,edgelist_file.readlines())
+		for line in edgelist_lines:
+			line=line.split(" ")
+			edgelist_hash[(line[0],line[3])]={"sx":float(line[1]),"sy":float(line[2]),"ex":float(line[4]),"ey":float(line[5]),"r":float(line[6]),"g":float(line[7]),"b":float(line[8]),"alpha":float(line[9])}
+	return edgelist_hash
+		
+def get_nodelist(snapshot):
+	snapshot=snapshot.split(".")
+	nodelist_hash={}
+	with open("../../data/"+"/".join(snapshot)+"/nodelist") as nodelist_file:
+		nodelist_lines=map(str.strip,nodelist_file.readlines())
+		for line in nodelist_lines:
+			line=line.split(" ")
+			nodelist_hash[line[0]]={"x":float(line[1]),"y":float(line[2]),"radius":float(line[3])}
+	return nodelist_hash
+
+app = Flask(__name__)
+app.debug=True
+
+@app.route('/')
+def home():
+	return render_template("index.html")
+
+"""
+@app.route('/astopo/api/outdegree/<int:outdegree>',methods=['GET'])
+def filter_by_outdegree(outdegree):
+	aslist=[]
+	for x in outdegree_hash:
+		if outdegree_hash[x]>=outdegree:
+			aslist.append(x)
+	data=[]	
+	for asn in aslist:
+		xcoord=nodelist_hash[asn][0]
+		ycoord=nodelist_hash[asn][1]
+		data.append({'x':xcoord,'y':ycoord})
+	print "no. of nodes: "+str(len(aslist))	
+	data2=[]
+	for sasn in aslist:
+		for easn in aslist:
+			sasn=str(sasn)
+			easn=str(easn)
+			if sasn+" "+easn in edgelist_hash:
+				data2.append(edgelist_hash[sasn+" "+easn])
+	print "no. of edges: "+str(len(data2))					
+	return jsonify({'N':len(data),'E':len(data2),'data':data,'data2':data2})
+"""
+
+@app.route('/astopo/check')
+def check_route():
+	return "check"
+
+@app.route('/astopo/api/normal/<string:query>')
+def query_normal(query):
+	parts=map(str,query.split("&"))
+	query_hash={}
+	for x in parts:
+		tmp=x.split("=")
+		query_hash[tmp[0]]=tmp[1]
+	outdegree_hash=get_outdegree(query_hash["snapshot"])
+	nodelist_hash=get_nodelist(query_hash["snapshot"])
+	edgelist_hash=get_edgelist(query_hash["snapshot"])
+	
+	aslist={}
+	for asn in outdegree_hash:
+		if outdegree_hash[asn]>=int(query_hash["outdegree"]):
+			aslist[asn]=None
+	
+	data=[]
+	for asn in aslist:
+		data.append(nodelist_hash[asn])
+	
+	data2=[]
+	for asn1,asn2 in edgelist_hash:
+		if (asn1 in aslist) and (asn2 in aslist):
+			data2.append(edgelist_hash[(asn1,asn2)]) 
+	
+	print "Nodes:"+str(len(data))
+	print "Edges:"+str(len(data2))		
+	return jsonify({'N':len(data),'E':len(data2),'data':data,'data2':data2})
+	
+
+@app.route('/astopo/api/bipartite/<string:query>')
+def query_bipartite(query):
+	parts=map(str,query.split("&"))
+	query_hash={}
+	for x in parts:
+		tmp=x.split("=")
+		query_hash[tmp[0]]=tmp[1]
+	print query_hash
+	return query
+	
+
+@app.route('/astopo/api/ascentric/<string:query>')
+def query_ascentric(query):
+	parts=map(str,query.split("&"))
+	query_hash={}
+	for x in parts:
+		tmp=x.split("=")
+		query_hash[tmp[0]]=tmp[1]
+	print query_hash
+	return query
+	
+if __name__ == '__main__':
+    app.run()

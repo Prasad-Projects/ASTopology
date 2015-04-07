@@ -1,0 +1,71 @@
+.topbar {
+	width: 96%;
+	float: right;
+	color: white;
+	background-color: #2288EE;
+	padding: 10px;
+	margin: 0px;
+	font-family: 'Lato', sans-serif;
+	font-weight: bold;
+}
+
+.menubutton {
+	margin-left: 1%;
+	margin-right: 1%;
+	width: 2%;
+}
+
+.topbarcont {
+	position: inline-table;
+	width: 100%;
+	background-color: #2288EE;
+}
+
+.mdi-navigation-menu {
+	color: white;
+}
+
+.panel-element {
+	margin-top: 10px;
+	padding: 15px;
+}
+
+.row {
+	padding: 0px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.collapsible-header {
+	font-size: 18px;
+	padding-bottom: 2px;
+}
+
+/* label color */
+.input-field label {
+	color: #000;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+	color: #2288EE;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+	border-bottom: 1px solid #2288EE;
+	box-shadow: 0 1px 0 0 #000;
+}
+
+.btn {
+	margin-top: 10px;
+	width: 100%;
+	margin-bottom: -5px;
+	background-color: #2288EE;
+}
+
+.btn:enabled {
+	background-color: #2288EE;
+}
+
+.mdi-action-autorenew {
+	color: white;
+}
