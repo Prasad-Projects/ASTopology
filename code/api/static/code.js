@@ -7,9 +7,44 @@ $(document).ready(function() {
 	
 	$('select').material_select();
 	
-	var paper = Raphael($("#container")[0],1600,1200);
-	paper.circle(512+100,512+40,512+20);
-	//paper.cirlce(512+40,512+40,200);
+	var container = $("#container");
+	
+	var paper = Raphael('container', container.width(), container.height());
+	
+	var panZoom = paper.panzoom({ initialZoom: 1, initialPosition: { x: 100, y: 0} });
+    
+    panZoom.enable();
+    paper.safari();
+	
+	$("#container .ZI").click(function (e) {
+        panZoom.zoomIn(1);
+        e.preventDefault();
+    });
+
+    $("#container .ZO").click(function (e) {
+        panZoom.zoomOut(1);
+        e.preventDefault();
+    });
+	
+	$("#container .PU").click(function (e) {
+        panZoom.pan(0, 30);
+        e.preventDefault();
+    });
+	
+	$("#container .PL").click(function (e) {
+        panZoom.pan(30, 0);
+        e.preventDefault();
+    });
+	
+	$("#container .PD").click(function (e) {
+        panZoom.pan(0, -30);
+        e.preventDefault();
+    });
+	
+	$("#container .PR").click(function (e) {
+        panZoom.pan(-30, 0);
+        e.preventDefault();
+    });
 	
 	function NodeManager( paper, node_radius, node_style, label_style )
 	{
@@ -41,16 +76,13 @@ $(document).ready(function() {
 			line.translate(0.1, 0.1);
 	}
 	
-		
-	function randomIntFromInterval(min,max)
-	{
-		return Math.floor(Math.random()*(max-min+1)+min);
-	}
-	
-	query_prefix="http://localhost:5000/astopo/api";
+query_prefix="http://localhost:5000/astopo/api";
 	
 	function getNormalQuery() {
-		snapshot="2013.03.01.0200";
+		snapshot=$("#snapshot")[0].value;
+		if(!snapshot){
+			snapshot = "2013.03.01.0200";
+		};
 		outdegree=$("#outdegree")[0].value;
 		country=$("#country")[0].value;
 		edgetype=$("#edgetype")[0].value;
@@ -58,26 +90,31 @@ $(document).ready(function() {
 	}
 	
 	function getBipartiteQuery() {
-		snapshot="2013.03.01.0200";
+		snapshot=$("#snapshot")[0].value;
+		if(!snapshot){
+			snapshot = "2013.03.01.0200";
+		};
 		set1=$("#set1")[0].value;
 		set2=$("#set2")[0].value;
 		return query_prefix+"/normal/snapshot="+snapshot+"&set1="+set1+"&set2="+set2;
 	}
 	
 	function getASCentricQuery() {
-		snapshot="2013.03.01.0200";
+		snapshot=$("#snapshot")[0].value;
+		if(!snapshot){
+			snapshot = "2013.03.01.0200";
+		};
 		asnumber=$("#asnumber")[0].value;
 		return query_prefix+"/normal/snapshot="+snapshot+"&asnumber="+asnumber;
 	}
 		
 	$("#normalRedraw").bind('click', function () { 
-		$.get(getNormalQuery(), function(json) {
-			paper.clear();
-			paper.circle(512+100,512+40,512+20);
-			drawEdges(json.data2,json.E);
-			drawNodes(json.data,json.N);
-			paper.cirlce(512+40,512+40,20);
-		});
+		//$.get(getNormalQuery(), function(json) {
+		//	paper.clear();
+		//	drawEdges(json.data2,json.E);
+		//	drawNodes(json.data,json.N);
+		//});
+		alert(getNormalQuery());
 	});
 	
 	$("#bipartiteRedraw").bind('click', function () { 
@@ -90,8 +127,10 @@ $(document).ready(function() {
 	
 	var nodeMgr = new NodeManager(paper);
 
-	var XOFFSET = 40;
-	var YOFFSET = 40;
+	var N = 1000//43735;
+	var E = 2000;//125462;
+	var XOFFSET = 300;
+	var YOFFSET = 75;
 		
 	var LY = 5;
 	var LY1 = 10;
@@ -101,9 +140,9 @@ $(document).ready(function() {
 	var LX1 = 10;
 	var RX = 0.6584415;
 	
-	//drawEdges(JSON.parse(data2));
-	//drawNodes(JSON.parse(data));
-	
+	//drawEdges(JSON.parse(data2), E);
+	//drawNodes(JSON.parse(data), N);
+
 	function drawEdges(jsondata,E) {
 		var mydata = jsondata
 		for(i = 0; i < E; i++) {
