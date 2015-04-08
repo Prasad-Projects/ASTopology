@@ -1,25 +1,29 @@
 <html>
 <head>
 
-  <title>Raphael.js Experiment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>AS-Level Topology</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-  <link type="text/css" rel="stylesheet" href="static/css/materialize.min.css"  media="screen,projection"/>
-  <link type="text/css" rel="stylesheet" href="static/style.css">
-  <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <meta charset=utf-8 />
+	<link type="text/css" rel="stylesheet" href="../static/css/materialize.min.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="../static/style.css">
+	<link type="text/css" rel="stylesheet" href="../static/src/raphael.pan-zoom.css">
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+	<meta charset=utf-8 />
 
 </head>
 <body>
 
-  <script type="text/javascript" src="static/js/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="static/js/materialize.min.js"></script>
-  <script type="text/javascript" src="static/code.js"></script>
-  
-  <script src="static/js/raphael-min.js"></script>
+  <script type="text/javascript" src="../static/js/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="../static/js/materialize.min.js"></script>
+  <script type="text/javascript" src="../static/code.js"></script>
+  <script type="text/javascript" src="../static/nodes.json"></script>
+  <script type="text/javascript" src="../static/edges.json"></script>
+  <script src="../static/js/raphael-min.js"></script>
+  <script src="../static/src/raphael.pan-zoom.js"></script>
 
   <div class = "topbarcont">
-	<div class="topbar">Raphael.js Experiment</div>
+	<div class="topbar">AS-Level Topology</div>
   
 	<div class="menubutton">
 		<a href="#" data-activates="slide-out" class="button-collapse">
@@ -29,6 +33,25 @@
   </div>
   
   <ul id="slide-out" class="side-nav">
+	
+	<div class = "snapshotDropdown number1">
+		<select id="snapshot">
+			<option value="" disabled selected>Snapshot</option>
+			<option value="2013.01.01.0200">January</option>
+			<option value="2013.02.01.0200">February</option>
+			<option value="2013.03.01.0200">March</option>
+			<option value="2013.04.01.0200">April</option>
+			<option value="2013.05.01.0200">May</option>
+			<option value="2013.06.01.0200">June</option>
+			<option value="2013.07.01.0200">July</option>
+			<option value="2013.08.01.0200">August</option>
+			<option value="2013.09.01.0200">September</option>
+			<option value="2013.10.01.0200">October</option>
+			<option value="2013.11.01.0200">November</option>
+			<option value="2013.12.01.0200">December</option>
+		</select>
+	</div>
+			
 	<li class="no-padding">
       <ul class="collapsible collapsible-accordion">
         <li>
@@ -137,7 +160,30 @@
 	</li>
   </ul>
 
-  <div id = "container"></div>
+  <div id = "container">
+	<div class="nav-container">
+		<div class="row1">
+			<div class = "r1c1"><img class="ATL" src="../static/icons/archTopLeft.png"/></div>
+			<div class = "r1c2"><img class="PU" src="../static/icons/panUp.png"/></div>
+			<div class = "r1c3"><img class="ATR" src="../static/icons/archTopRight.png"/></div>
+		</div>
+		
+		<div class="row2">
+			<div class = "r2c1"><img class="PL" src="../static/icons/panLeft.png"/></div>
+			<div class = "r2c2">
+				<div class = "r2c2UPPER"><img class="ZI" src="../static/icons/zoomin.png"/></div>
+				<div class = "r2c2LOWER"><img class="ZO" src="../static/icons/zoomout.png"/></div>
+			</div>
+			<div class = "r2c3"><img class="PR" src="../static/icons/panRight.png"/></div>
+		</div>
+		
+		<div class="row3">
+			<div class = "r3c1"><img class="ABL" src="../static/icons/archBottomLeft.png"/></div>
+			<div class = "r3c2"><img class="PD" src="../static/icons/panDown.png"/></div>
+			<div class = "r3c3"><img class="ABR" src="../static/icons/archBottomRight.png"/></div>
+		</div>
+	</div>
+  </div>
   
 </body>
 </html>
