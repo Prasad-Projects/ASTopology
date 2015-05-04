@@ -76,7 +76,7 @@ $(document).ready(function() {
 			line.translate(0.1, 0.1);
 	}
 	
-query_prefix="http://localhost:5000/astopo/api";
+	var query_prefix="http://localhost:5000/astopo/api";
 	
 	function getNormalQuery() {
 		snapshot=$("#snapshot")[0].value;
@@ -96,7 +96,7 @@ query_prefix="http://localhost:5000/astopo/api";
 		};
 		set1=$("#set1")[0].value;
 		set2=$("#set2")[0].value;
-		return query_prefix+"/normal/snapshot="+snapshot+"&set1="+set1+"&set2="+set2;
+		return query_prefix+"/bipartite/snapshot="+snapshot+"&set1="+set1+"&set2="+set2;
 	}
 	
 	function getASCentricQuery() {
@@ -105,24 +105,35 @@ query_prefix="http://localhost:5000/astopo/api";
 			snapshot = "2013.03.01.0200";
 		};
 		asnumber=$("#asnumber")[0].value;
-		return query_prefix+"/normal/snapshot="+snapshot+"&asnumber="+asnumber;
+		return query_prefix+"/ascentric/snapshot="+snapshot+"&asnumber="+asnumber;
 	}
 		
 	$("#normalRedraw").bind('click', function () { 
-		//$.get(getNormalQuery(), function(json) {
-		//	paper.clear();
-		//	drawEdges(json.data2,json.E);
-		//	drawNodes(json.data,json.N);
-		//});
-		alert(getNormalQuery());
+		$.get(getNormalQuery(), function(json) {
+			paper.clear();
+			drawEdges(json.data2,json.E);
+			drawNodes(json.data,json.N);
+		});
+		//alert(getNormalQuery());
 	});
 	
 	$("#bipartiteRedraw").bind('click', function () { 
-		alert(getBipartiteQuery());
+		$.get(getBipartiteQuery(), function(json) {
+			paper.clear();
+			drawEdges(json.data2,json.E);
+			drawNodes(json.set1,json.N_set1);
+			drawNodes(json.set2,json.N_set2);
+		});
+		//alert(getBipartiteQuery());
 	});
 	
 	$("#ascentricRedraw").bind('click', function () {
-		alert(getASCentricQuery());
+		$.get(getASCentricQuery(), function(json) {
+			paper.clear();
+			drawEdges(json.data2,json.E);
+			drawNodes(json.data,json.N);
+		});
+		//alert(getASCentricQuery());
 	});
 	
 	var nodeMgr = new NodeManager(paper);
@@ -195,7 +206,7 @@ query_prefix="http://localhost:5000/astopo/api";
 			var y = giveny + YOFFSET;
 			
 			var radius = mydata[i].radius*0.3;
-			var node_style = { fill: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), stroke: 'black', 'stroke-width': 1 };
+			var node_style = { fill: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), stroke: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), 'stroke-width': 0 };
 						
 			nodeMgr.addNode("o", x, y, radius, node_style);
 		}	
