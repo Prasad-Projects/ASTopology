@@ -5,6 +5,8 @@ $(document).ready(function() {
 		closeOnClick: false // Closes side-nav on <a> clicks, useful for Angular/Meteor);
 	});
 	
+	$("body").css("overflow", "hidden");
+	
 	$('select').material_select();
 	
 	var container = $("#container");
@@ -124,7 +126,7 @@ $(document).ready(function() {
 			drawNodes(json.set1,json.N_set1);
 			drawNodes(json.set2,json.N_set2);
 		});
-		//alert(getBipartiteQuery());
+		//alert("Graph drawn");
 	});
 	
 	$("#ascentricRedraw").bind('click', function () {
@@ -163,11 +165,11 @@ $(document).ready(function() {
 			//var startX = (givenStartX - LX)/RX + LX1;
 			//var startY = (givenStartY - LY)/RY + LY1;
 			
-			//var startX = givenStartX / 2 + 300;
-			//var startY = givenStartY / 2 + 100;
+			var startX = givenStartX / 1.75 + 500;
+			var startY = givenStartY / 1.75 + 220;
 			
-			var startX = givenStartX + XOFFSET;
-			var startY = givenStartY + YOFFSET;
+			//var startX = givenStartX + XOFFSET;
+			//var startY = givenStartY + YOFFSET;
 			
 			var givenEndX = mydata[i].ex;
 			var givenEndY = mydata[i].ey;
@@ -175,11 +177,11 @@ $(document).ready(function() {
 			//var endX = (givenEndX - LX)/RX + LX1;
 			//var endY = (givenEndY - LY)/RY + LY1;
 			
-			//var endX = givenEndX / 2 + 300;
-			//var endY = givenEndY / 2 + 100;
+			var endX = givenEndX / 1.75 + 500;
+			var endY = givenEndY / 1.75 + 220;
 			
-			var endX = givenEndX + XOFFSET;
-			var endY = givenEndY + YOFFSET;
+			//var endX = givenEndX + XOFFSET;
+			//var endY = givenEndY + YOFFSET;
 			
 			var alpha = mydata[i].alpha;
 			var r = mydata[i].r;
@@ -199,11 +201,11 @@ $(document).ready(function() {
 			//var x = (givenx - LX)/RX + LX1;
 			//var y = (giveny - LY)/RY + LY1;
 			
-			//var x = givenx / 2 + 300;
-			//var y = giveny / 2 + 100;
+			var x = givenx / 1.75 + 500;
+			var y = giveny / 1.75 + 220;
 			
-			var x = givenx + XOFFSET;
-			var y = giveny + YOFFSET;
+			//var x = givenx + XOFFSET;
+			//var y = giveny + YOFFSET;
 			
 			var radius = mydata[i].radius*0.3;
 			var node_style = { fill: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), stroke: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), 'stroke-width': 0 };
