@@ -73,7 +73,7 @@ $(document).ready(function() {
 	{   
 			var line = paper.path( ["M", startX, startY, "L", endX, endY ] );
 			line.attr("stroke-width", "0.25");
-			line.attr("opacity", 1.5*alpha);
+			line.attr("opacity", 2*alpha);
 			line.attr("stroke", Raphael.rgb(r*255,g*255,b*255));
 			line.translate(0.1, 0.1);
 	}
@@ -116,17 +116,15 @@ $(document).ready(function() {
 			drawEdges(json.data2,json.E);
 			drawNodes(json.data,json.N);
 		});
-		//alert(getNormalQuery());
 	});
 	
 	$("#bipartiteRedraw").bind('click', function () { 
 		$.get(getBipartiteQuery(), function(json) {
 			paper.clear();
 			drawEdges(json.data2,json.E);
-			drawNodes(json.set1,json.N_set1);
-			drawNodes(json.set2,json.N_set2);
+			drawNodes(json.set1,json.N_set1, "red");
+			drawNodes(json.set2,json.N_set2, "green");
 		});
-		//alert("Graph drawn");
 	});
 	
 	$("#ascentricRedraw").bind('click', function () {
@@ -135,7 +133,6 @@ $(document).ready(function() {
 			drawEdges(json.data2,json.E);
 			drawNodes(json.data,json.N);
 		});
-		//alert(getASCentricQuery());
 	});
 	
 	var nodeMgr = new NodeManager(paper);
@@ -162,26 +159,14 @@ $(document).ready(function() {
 			var givenStartX = mydata[i].sx;
 			var givenStartY = mydata[i].sy;
 			
-			//var startX = (givenStartX - LX)/RX + LX1;
-			//var startY = (givenStartY - LY)/RY + LY1;
-			
 			var startX = givenStartX / 1.75 + 500;
-			var startY = givenStartY / 1.75 + 220;
-			
-			//var startX = givenStartX + XOFFSET;
-			//var startY = givenStartY + YOFFSET;
+			var startY = givenStartY / 1.75 + 100;
 			
 			var givenEndX = mydata[i].ex;
 			var givenEndY = mydata[i].ey;
 			
-			//var endX = (givenEndX - LX)/RX + LX1;
-			//var endY = (givenEndY - LY)/RY + LY1;
-			
 			var endX = givenEndX / 1.75 + 500;
-			var endY = givenEndY / 1.75 + 220;
-			
-			//var endX = givenEndX + XOFFSET;
-			//var endY = givenEndY + YOFFSET;
+			var endY = givenEndY / 1.75 + 100;
 			
 			var alpha = mydata[i].alpha;
 			var r = mydata[i].r;
@@ -192,25 +177,46 @@ $(document).ready(function() {
 		}	
 	}
 	
-	function drawNodes(jsondata,N) {
+	function drawNodes(jsondata,N, color = "default") {
 		var mydata = jsondata;
-		for(i = 0; i < N; i++) {
-			var givenx = mydata[i].x;
-			var giveny = mydata[i].y;
+		
+		if(color === "default") {
+			for(i = 0; i < N; i++) {
+				var givenx = mydata[i].x;
+				var giveny = mydata[i].y;
+				
+				var x = givenx / 1.75 + 500;
+				var y = giveny / 1.75 + 100;
+				
+				var radius = mydata[i].radius*0.3;
+				var node_style = { fill: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), stroke: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), 'stroke-width': 0 };
+							
+				nodeMgr.addNode("o", x, y, radius, node_style);
+			}
+		} else {
+			var red, green, blue;
+			if(color == "red") {
+				red = 200;
+				green = 0;
+				blue = 0;
+			} else {
+				red = 0;
+				green = 200;
+				blue = 0;
+			}
 			
-			//var x = (givenx - LX)/RX + LX1;
-			//var y = (giveny - LY)/RY + LY1;
-			
-			var x = givenx / 1.75 + 500;
-			var y = giveny / 1.75 + 220;
-			
-			//var x = givenx + XOFFSET;
-			//var y = giveny + YOFFSET;
-			
-			var radius = mydata[i].radius*0.3;
-			var node_style = { fill: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), stroke: Raphael.rgb(mydata[i].r, mydata[i].g, mydata[i].b), 'stroke-width': 0 };
-						
-			nodeMgr.addNode("o", x, y, radius, node_style);
-		}	
+			for(i = 0; i < N; i++) {
+				var givenx = mydata[i].x;
+				var giveny = mydata[i].y;
+				
+				var x = givenx / 1.75 + 500;
+				var y = giveny / 1.75 + 100;
+				
+				var radius = mydata[i].radius*0.3;
+				var node_style = { fill: Raphael.rgb(red, green, blue), stroke: Raphael.rgb(red, green, blue), 'stroke-width': 0 };
+							
+				nodeMgr.addNode("o", x, y, radius, node_style);
+			}
+		}
 	}
 });
